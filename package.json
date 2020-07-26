@@ -1,0 +1,42 @@
+{
+  "name": "code-challenge-0724",
+  "version": "1.0.0",
+  "description": "retrieve and display blog posts from a test API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "set DEBUG=server & nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-scrub/code-challenge-0724.git"
+  },
+  "keywords": [
+    "code-challenge"
+  ],
+  "author": "Suryakanta Tripathi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/code-scrub/code-challenge-0724/issues"
+  },
+  "homepage": "https://github.com/code-scrub/code-challenge-0724#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.0",
+    "chalk": "^4.1.0",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "jquery": "^3.5.1",
+    "nodemon": "^2.0.4"
+  },
+  "nodemonConfig": {
+    "restartable": "rs",
+    "ignore": [
+      "node_modules/**/node_modules"
+    ],
+    "delay": "2500",
+    "env": {
+      "NODE_ENV": "development",
+      "PORT": 9000
+    }
+  }
+}

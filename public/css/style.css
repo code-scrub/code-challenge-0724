@@ -1,0 +1,31 @@
+body {
+  padding-top:50px;
+  color:#C23836;
+  background-color:#efefef;
+}
+
+body {
+    padding-top:50px;
+    background-color:#efefef;
+}
+
+h1,h2,h3 {
+  font-family:'Oswald',arial narrow,sans-serif;
+  color:#223344;
+}
+
+.top-spacer {
+  background-color:yellowgreen;
+  height:10px;
+}
+
+footer {
+    font-size: medium;
+    padding-top:30px;
+    color:#C23836;
+}
+
+a,a:hover {
+    color:blue;
+    text-decoration:none;
+  }
