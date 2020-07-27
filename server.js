@@ -1,45 +1,64 @@
 const express = require('express');
+const fs = require('fs');
 const chalk = require('chalk');
 const path = require('path');
+//const async = require('express-async-await');
+const fetch = require('node-fetch');
 
 const server = express();
-const port = process.env.PORT || 9090;
 const blogRouter = express.Router();
+const port = process.env.PORT || 9090;
+const url = 'https://jsonplaceholder.typicode.com/posts';
+
+server.set('views', './src/views');
+server.set('view engine', 'ejs');
 
 server.use(express.static(path.join(__dirname, "/public")));
 server.use('/css', express.static(path.join(__dirname, "/node_modules/bootstrap/dist/css")));
 server.use('/js', express.static(path.join(__dirname, "/node_modules/bootstrap/dist/js")));
 server.use('/js', express.static(path.join(__dirname, "/node_modules/jquery/dist")));
-server.set('views', './src/views');
-server.set('view engine', 'ejs');
+server.use('/posts', blogRouter);
+
+async function getJSONData(url) {
+    try {
+        let data = await fetch(url)
+        let body = await data.text();
+        let json = JSON.parse(body);
+        fs.writeFile('./files/PostsList.txt', body, JSON, function (err) {
+            if (err) {
+                return console.log(err);
+            }
+        });
+        return json;
+    }
+    catch (error) {
+        fs.unlink('./files/PostsList.txt');
+        console.log('Opps, an error occurred', error);
+    }
+}
+
+function preLoad() {
+    getJSONData(url);
+}
 
 blogRouter.route('/').get((request, response) => {
-    response.render('listPosts', {
-        list: [
-            { 'title': 'Portent’s Content Idea Generator' },
-            { 'title': 'Build Your Own Blog’s Idea Generator' },
-            { 'title': 'Blog Title Idea Generator' }]
+    response.render('postListView', {
+        posts: JSON.parse(fs.readFileSync('./files/PostsList.txt'))
     });
 });
 
-server.get('/posts/1', function(request, response) {
-    response.send('Portent’s Content Idea Generator is as simple as they get. Just toss in a keyword and go to town. This generator has some personality, adding little quips and jokes in bubbles alongside the topic suggestions. As is common with these generator tools, some blog topic suggestions will come out a bit silly, but spend enough time on this one and you’ll definitely find some gems.');
-});
-
-server.get('/posts/2', function (request, response) {
-    response.send('The Blog Post Idea Generator from Build Your Own Blog is a bit different in that you don’t put in any keyword related to your industry – you just tap the “generate blog post idea” button and off you go.');
-});
-
-server.get('/posts/3', function (request, response) {
-    response.send('This Blog Title Idea Generator from Inbound Now is basically the same as the one listed above. It’s fine. You’ll probably find some nice blog post title ideas. Not much else to say');
-});
-
-server.use('/posts', blogRouter);
+blogRouter.route('/:id')
+    .get((request, response) => {
+        const id = request.params.id;
+        const posts = JSON.parse(fs.readFileSync('./files/PostsList.txt'));
+        response.render('postView', { post: posts[id] });
+    });
 
 server.get('/', function (request, response, url) {
-    response.render('home')
+    response.render('homeView')
 });
 
 server.listen(port, function () {
     console.log(`Server is listening on port # ${chalk.green(port)}...`);
+    preLoad();
 });

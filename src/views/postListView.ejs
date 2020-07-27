@@ -8,8 +8,6 @@
     <link href="/css/style.css" rel="stylesheet">
 </head>
 
-<!-- Start -->
-
 <body>
     <div class=container>
 
@@ -26,24 +24,17 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-12"><a href="/posts">
-                    <h3>LM Blogs</h3>
-                </a>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-md-12">
                 <div class="col-md-10 col-sm-9">
-                    <ul>
-                        <% for(var i=0; i<list.length; i++){ %>
+                    <ol>
+                        <% for(var i=0; i<25; i++){ %>
                         <li>
-                            <a href="/posts/<%=i+1%>">
-                                <p>Welcome <%=list[i].title%><p>
+                            <a href="/posts/<%=posts[i].id%>">
+                                <p><%=posts[i].title%><p>
                             </a>
                         </li>
                         <% } %>
-                    </ul>
+                    </ol>
                 </div>
             </div>
         </div>
